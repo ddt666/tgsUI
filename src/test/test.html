@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+<base-layout>
+
+    <h1 slot="header">Here might be a page title</h1>
+
+
+  <p>A paragraph for the main content.</p>
+  <p>And another one.</p>
+
+  <template v-slot:footer>
+    <p>Here's some contact info</p>
+  </template>
+</base-layout>
+
+  <todo-list v-bind:todos="todos">
+  <template slot="todo" slot-scope="{todo }">
+    <span v-if="todo.isComplete">✓</span>
+    {{ todo.text }}
+  </template>
+</todo-list>
+</div>
+</body>
+<script>
+
+  let todoList={
+    template: `<ul>
+  <li
+    v-for="todo in todos"
+    v-bind:key="todo.id"
+  ><slot name="todo" v-bind:todo="todo">
+      {{todo.text}}
+      </slot>
+      </li>
+      </ul>`,
+
+    props:{
+      todos:{
+
+      }
+    },
+    data(){
+      return{
+        filteredTodos:this.todos
+      }
+    }
+  }
+ let baseLayout = {
+   template: `<div class="container">
+  <header>
+    <slot name="header"></slot>
+  </header>
+  <main>
+    <slot></slot>
+  </main>
+  <footer>
+    <slot name="footer"></slot>
+  </footer>
+</div>`,
+
+
+ }
+
+
+  const app = new Vue({
+    el: '#app',
+    components:{
+      baseLayout,todoList
+    },
+    data(){
+      return{
+        todos:[
+          {id:1,text:"一",isComplete:true},
+          {id:2,text:"二",isComplete:false}
+          ]
+      }
+    }
+
+  })
+</script>
+</html>
