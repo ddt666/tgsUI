@@ -7,37 +7,19 @@
           <div style="width: 200px;text-align: center">logo</div>
         </el-col>
         <el-col :span="22">
-          <el-menu class="el-menu-demo" mode="horizontal"
-                   background-color="#304156"
-                    text-color="#fff"
-                    active-text-color="#409EFF"
-                    style='border:none'
-          >
 
-            <el-submenu index="2" style="float: right;margin-right: 60px;">
+           <menu-tree></menu-tree>
 
-              <template slot="title">{{$store.state.userInfo.username}}</template>
-              <el-menu-item @click="handlerLogout">登出</el-menu-item>
 
-            </el-submenu>
 
-          </el-menu>
         </el-col>
       </el-row>
 
 
     </el-header>
-    <el-container style="overflow: auto;">
 
 
-      <el-aside style='width:200px;box-shadow:0px 0px 10px  rgba(0,0,0,.12);z-index: 1'>
-        <el-scrollbar class='_scroll'>
-          <menu-tree></menu-tree>
 
-        </el-scrollbar>
-      </el-aside>
-
-      <el-container>
 
 
         <el-main style="padding: 25px 50px">
@@ -59,15 +41,14 @@
           <!-- <el-button type='text' @click='contactDialog=true'>系统帮助</el-button> -->
         </el-footer>
       </el-container>
-    </el-container>
-  </el-container>
+
 </template>
 
 <script>
   import menuTree from './menuTree'
 
   export default {
-    name: "Layout",
+    name: "layout",
     data() {
       return {
         headerHeight: '60px',

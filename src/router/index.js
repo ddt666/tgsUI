@@ -4,7 +4,7 @@ import VueCookies from 'vue-cookies'
 import store from '@/store'
 
 
-import Layout from '@/components/Layout'
+import Layout from '@/components/layout'
 import Media from '@/components/media'
 import NewMedia from '@/components/media/NewMedia'
 import Service from '@/components/service'

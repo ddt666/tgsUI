@@ -3,14 +3,10 @@
     :default-active='$route.path'
     class="el-menu-vertical-demo"
     :router="true"
-     mode="horizontal"
-    background-color="#304156"
-    text-color="#fff"
-    active-text-color="#409EFF"
-    style='border:none'
+
     @open="handleOpen"
     @close="handleClose"
-  >
+   >
 
 
     <el-menu-item index="/plan/list">
@@ -36,12 +32,6 @@
         </template>
       </el-menu-item>
     </el-submenu>
-    <el-submenu index="2" style="float: right;margin-right: 60px;">
-
-      <template slot="title">{{$store.state.userInfo.username}}</template>
-      <el-menu-item @click="handlerLogout">登出</el-menu-item>
-
-    </el-submenu>
 
   </el-menu>
 </template>
@@ -49,7 +39,7 @@
 <script>
   export default {
     name: "menuTree",
-    methods: {
+    methods:{
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
