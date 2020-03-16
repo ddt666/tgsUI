@@ -55,6 +55,11 @@
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
+      },
+       handlerLogout() {
+        this.$store.dispatch("logout").then(res => {
+
+        })
       }
     }
   }

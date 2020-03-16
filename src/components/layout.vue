@@ -66,11 +66,7 @@
         console.log(this.$refs.elHeader.$el.clientHeight)
         this.headerHeight = this.$refs.elHeader.$el.clientHeight + 'px'
       },
-      handlerLogout() {
-        this.$store.dispatch("logout").then(res => {
 
-        })
-      }
     }
   }
 </script>

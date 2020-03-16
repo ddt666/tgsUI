@@ -112,16 +112,19 @@
     <!--:header-row-style="{color:'red'}"-->
     <el-table
       :data="planTable"
+      highlight-current-row
       style="width: 100%"
-      stripe
 
+      height="700"
       v-loading="loading"
-
+      show-summary
+      ref="tableDataRef"
       :header-cell-style="headerRowStyle"
     >
       <el-table-column
         type="selection"
-        width="40" align="center">
+         fixed
+        width="85px" align="center">
       </el-table-column>
       <el-table-column
         label="ID"
@@ -145,13 +148,14 @@
         label="媒体数据"
         align="center"
         prop="m_"
+
       >
         <el-table-column
           label="媒体"
-          prop="m_full_name" align="center">
+          prop="m_full_name" align="center"  >
         </el-table-column>
         <el-table-column v-for=" col in  m_columns" :prop="col.prop" :label="col.label" align="center"
-                         :key="col.prop" width="85px"></el-table-column>
+                         :key="col.prop" ></el-table-column>
       </el-table-column>
 
       <el-table-column
@@ -159,17 +163,20 @@
         align="center"
         prop="a_"
 
+
       >
         <el-table-column
           label="广告"
-          prop="a_full_name" align="center">
+          prop="a_full_name" align="center"
+
+        >
         </el-table-column>
         <el-table-column v-for=" col in  a_columns" :prop="col.prop" :label="col.label" align="center"
                          :key="col.prop" width="85px"></el-table-column>
       </el-table-column>
       <el-table-column
         label="利润(元)"
-        prop="settlement_info.profit" fixed="right" align="center">
+        prop="settlement_info.profit" fixed="right" align="center" >
         <template slot-scope="scope">
           <span :style="(scope.row.settlement_info.profit>0?'':'color:red')">{{scope.row.settlement_info.profit}}</span>
         </template>
@@ -207,7 +214,7 @@
     <!-- 分页 -->
     <el-pagination style='margin-top: 20px'
                    background
-                   :page-sizes="[5, 10, 20, 50]"
+                   :page-sizes="[ 20,30, 50,100]"
                    :page-size="requestParams.pageSize"
                    :current-page.sync="requestParams.currentPage"
                    layout="total, sizes, prev, pager, next, jumper"
@@ -284,10 +291,10 @@
       prop: "settlement_info.a_click_rate"
     },
 
-    {
-      label: "七日唤醒率",
-      prop: "settlement_info.a_week_rate"
-    },
+    // {
+    //   label: "七日唤醒率",
+    //   prop: "settlement_info.a_week_rate"
+    // },
     {
       label: "结算数",
       prop: "settlement_info.a_settlement_count"
@@ -307,7 +314,7 @@
   const a_checkedColumnInit = a_columnsOptionInit.map((item, index, ary) => {
     return item.prop
   })
-
+  //const a_checkedColumnInit = [];
   const columnsInit = [
     {
       label: "媒体",
@@ -360,7 +367,7 @@
         dateRange: "",
         //数据请求的参数
         requestParams: {
-          pageSize: 10,//分页大小
+          pageSize: 20,//分页大小
           currentPage: 1,//当前页
           sortProp: '',
           sortOrder: '',
@@ -389,6 +396,9 @@
             this.planTable = res.data.list
             this.dataTotal = res.data.count
           }
+           this.$nextTick(() => {
+            this.$refs.tableDataRef.doLayout();
+          });
         })
       },
       //分页容量大小发生变化时
@@ -459,6 +469,15 @@
         //   return "background-color:green; color:red;"
         // }
 
+      },
+      getSummaries(param) {
+        const {columns, data} = param;
+        console.log("columns", columns, data)
+        const sums = ["总价", 1, 1, 1, 1, 1, 11, 1, 1]
+         // this.$nextTick(() => {
+         //    this.$refs.tableDataRef.doLayout();
+         //  });
+        return sums
       }
     },
     computed: {
@@ -474,6 +493,9 @@
             }
           }
           console.log("tempCols", tempCols)
+           this.$nextTick(() => {
+            this.$refs.tableDataRef.doLayout();
+          });
           return tempCols
         },
 
@@ -491,6 +513,9 @@
             }
           }
           console.log("tempCols", tempCols)
+           this.$nextTick(() => {
+            this.$refs.tableDataRef.doLayout();
+          });
           return tempCols
         }
       },
