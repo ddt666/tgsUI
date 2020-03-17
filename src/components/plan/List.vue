@@ -115,15 +115,16 @@
       highlight-current-row
       style="width: 100%"
 
-      height="700"
+      height="600"
       v-loading="loading"
       show-summary
+      :summary-method="getSummaries"
       ref="tableDataRef"
       :header-cell-style="headerRowStyle"
     >
       <el-table-column
         type="selection"
-         fixed
+        fixed
         width="85px" align="center">
       </el-table-column>
       <el-table-column
@@ -152,10 +153,10 @@
       >
         <el-table-column
           label="媒体"
-          prop="m_full_name" align="center"  >
+          prop="m_full_name" align="center">
         </el-table-column>
         <el-table-column v-for=" col in  m_columns" :prop="col.prop" :label="col.label" align="center"
-                         :key="col.prop" ></el-table-column>
+                         :key="col.prop"></el-table-column>
       </el-table-column>
 
       <el-table-column
@@ -176,7 +177,7 @@
       </el-table-column>
       <el-table-column
         label="利润(元)"
-        prop="settlement_info.profit" fixed="right" align="center" >
+        prop="settlement_info.profit" fixed="right" align="center">
         <template slot-scope="scope">
           <span :style="(scope.row.settlement_info.profit>0?'':'color:red')">{{scope.row.settlement_info.profit}}</span>
         </template>
@@ -339,6 +340,7 @@
         advertList: [],
         mediaList: [],
         planTable: [],
+        summary: {},
         statusList: [
           {
             id: 0,
@@ -395,8 +397,9 @@
             this.loading = false
             this.planTable = res.data.list
             this.dataTotal = res.data.count
+            this.summary = res.data.summary
           }
-           this.$nextTick(() => {
+          this.$nextTick(() => {
             this.$refs.tableDataRef.doLayout();
           });
         })
@@ -473,11 +476,24 @@
       getSummaries(param) {
         const {columns, data} = param;
         console.log("columns", columns, data)
-        const sums = ["总价", 1, 1, 1, 1, 1, 11, 1, 1]
-         // this.$nextTick(() => {
-         //    this.$refs.tableDataRef.doLayout();
-         //  });
-        return sums
+        let sumsIntit = ["", "合计", ""]
+
+        for (let i = 0; i < columns.length; i++) {
+          if (i <= 2) {
+            continue;
+          }
+          else{
+            console.log(columns[i].property)
+            let summ=this.summary[columns[i].property]?this.summary[columns[i].property]:""
+            sumsIntit.push(summ)
+          }
+        }
+        console.log(" sumsIntit", sumsIntit)
+
+        // this.$nextTick(() => {
+        //    this.$refs.tableDataRef.doLayout();
+        //  });
+        return sumsIntit
       }
     },
     computed: {
@@ -493,7 +509,7 @@
             }
           }
           console.log("tempCols", tempCols)
-           this.$nextTick(() => {
+          this.$nextTick(() => {
             this.$refs.tableDataRef.doLayout();
           });
           return tempCols
@@ -513,7 +529,7 @@
             }
           }
           console.log("tempCols", tempCols)
-           this.$nextTick(() => {
+          this.$nextTick(() => {
             this.$refs.tableDataRef.doLayout();
           });
           return tempCols

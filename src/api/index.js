@@ -6,8 +6,8 @@ import {Message} from "element-ui";
 import store from '@/store'
 
 
-const baseUrl = "http://122.51.96.111:8000/";
-// const baseUrl = "http://127.0.0.1:8000/"
+// const baseUrl = "http://122.51.96.111:8000/";
+const baseUrl = "http://127.0.0.1:8000/"
 // Axios.defaults.withCredentials = true;
 Axios.defaults.baseURL = baseUrl;
 Axios.defaults.headers['Content-Type'] = 'application/json'
