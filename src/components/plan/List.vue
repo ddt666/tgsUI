@@ -1,4 +1,4 @@
-<template>
+<template xmlns:el-col="http://www.w3.org/1999/html">
   <div>
 
 
@@ -63,51 +63,52 @@
 
     </el-row>
 
-
-    <el-row :gutter="20" style="margin-bottom: 20px" type="flex" justify="center">
-      <el-col :span="10">
-        <el-row>
-          <el-col :span="2"><span>媒体：</span></el-col>
-          <el-col :span="22">
-            <div>
-              <el-checkbox :indeterminate="m_isIndeterminate" v-model="m_checkAll"
-                           @change="m_handleCheckAllChange"
-                           style="margin-right: 28px"
-              >全选
-              </el-checkbox>
-              <!--<div style="margin: 15px 0;"></div>-->
-              <el-checkbox-group v-model="m_checkedColumn" @change="m_handleCheckedColumnChange"
-                                 style="display: inline;">
-                <el-checkbox v-for="item in m_columnsOption" :label="item.prop" :key="item.prop"> {{item.label}}
-                </el-checkbox>
-              </el-checkbox-group>
-            </div>
-          </el-col>
-        </el-row>
-
-
+    <el-row :gutter="10" style="margin-bottom: 10px">
+      <el-col :span="6">
+        <span style="font-size: 14px;float: right">媒体：</span>
       </el-col>
-      <el-col :span="10">
-        <el-row>
-          <el-col :span="2"><span>广告：</span></el-col>
-          <el-col :span="22">
-            <div>
-              <el-checkbox :indeterminate="a_isIndeterminate" v-model="a_checkAll"
-                           @change="a_handleCheckAllChange"
-                           style="margin-right: 28px"
-              >全选
-              </el-checkbox>
-              <!--<div style="margin: 15px 0;"></div>-->
-              <el-checkbox-group v-model="a_checkedColumn" @change="a_handleCheckedColumnChange"
-                                 style="display: inline;">
-                <el-checkbox v-for="item in a_columnsOption" :label="item.prop" :key="item.prop"> {{item.label}}
-                </el-checkbox>
-              </el-checkbox-group>
-            </div>
-          </el-col>
-        </el-row>
+
+      <el-col :span="18">
+
+        <el-checkbox :indeterminate="m_isIndeterminate" v-model="m_checkAll"
+                     @change="m_handleCheckAllChange"
+                     style="margin-right: 28px"
+        >全选
+        </el-checkbox>
+        <!--<div style="margin: 15px 0;"></div>-->
+        <el-checkbox-group v-model="m_checkedColumn" @change="m_handleCheckedColumnChange"
+                           style="display: inline;">
+          <el-checkbox v-for="item in m_columnsOption" :label="item.prop" :key="item.prop"> {{item.label}}
+          </el-checkbox>
+        </el-checkbox-group>
       </el-col>
+
+
     </el-row>
+
+    <el-row :gutter="10" style="margin-bottom: 10px">
+
+       <el-col :span="6">
+        <span style="font-size: 14px;float: right">广告：</span>
+      </el-col>
+      <el-col :span="18">
+
+        <el-checkbox :indeterminate="a_isIndeterminate" v-model="a_checkAll"
+                     @change="a_handleCheckAllChange"
+                     style="margin-right: 28px"
+        >全选
+        </el-checkbox>
+        <!--<div style="margin: 15px 0;"></div>-->
+        <el-checkbox-group v-model="a_checkedColumn" @change="a_handleCheckedColumnChange"
+                           style="display: inline;">
+          <el-checkbox v-for="item in a_columnsOption" :label="item.prop" :key="item.prop"> {{item.label}}
+          </el-checkbox>
+        </el-checkbox-group>
+      </el-col>
+
+
+    </el-row>
+
 
     <!--:header-row-style="{color:'red'}"-->
     <el-table
@@ -463,7 +464,7 @@
 
       },
       headerRowStyle({row, column, rowIndex, columnIndex}) {
-        console.log(row, column, rowIndex, columnIndex)
+        //console.log(row, column, rowIndex, columnIndex)
         if (typeof (column.property) == "undefined") {
           return
         }
@@ -475,20 +476,19 @@
       },
       getSummaries(param) {
         const {columns, data} = param;
-        console.log("columns", columns, data)
+        //console.log("columns", columns, data)
         let sumsIntit = ["", "合计", ""]
 
         for (let i = 0; i < columns.length; i++) {
-          if (i <= 2) {
+          if (i <= sumsIntit.length-1) {
             continue;
-          }
-          else{
-            console.log(columns[i].property)
-            let summ=this.summary[columns[i].property]?this.summary[columns[i].property]:""
+          } else {
+            //console.log(columns[i].property)
+            let summ = this.summary[columns[i].property] ? this.summary[columns[i].property] : ""
             sumsIntit.push(summ)
           }
         }
-        console.log(" sumsIntit", sumsIntit)
+        //console.log(" sumsIntit", sumsIntit)
 
         // this.$nextTick(() => {
         //    this.$refs.tableDataRef.doLayout();
@@ -508,7 +508,7 @@
               }
             }
           }
-          console.log("tempCols", tempCols)
+          //console.log("tempCols", tempCols)
           this.$nextTick(() => {
             this.$refs.tableDataRef.doLayout();
           });
@@ -520,7 +520,7 @@
       a_columns: {
         get() {
           let tempCols = []
-          console.log(this.a_columnsOption, this.a_checkedColumn)
+          //console.log(this.a_columnsOption, this.a_checkedColumn)
           for (var i = 0; i < this.a_columnsOption.length; i++) {
             for (var j = 0; j < this.a_checkedColumn.length; j++) {
               if (this.a_columnsOption[i].prop === this.a_checkedColumn[j]) {
@@ -528,7 +528,7 @@
               }
             }
           }
-          console.log("tempCols", tempCols)
+          //console.log("tempCols", tempCols)
           this.$nextTick(() => {
             this.$refs.tableDataRef.doLayout();
           });
