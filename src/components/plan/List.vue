@@ -2,124 +2,193 @@
   <div>
 
 
-    <el-row type="flex" justify="start" style="margin-bottom: 20px">
-      <router-link :to="{name:'NewPlan'}">
-        <el-button type="primary">新建计划</el-button>
-      </router-link>
-    </el-row>
-    <el-row class="filter-row" type="flex" justify="center" style="margin-bottom: 20px">
-      <el-form inline>
+    <el-row type="flex" justify="center" style="margin-bottom: 20px">
 
-        <el-form-item label="媒体">
-          <el-select v-model="queryParams.media" filterable clearable placeholder="请选择">
-            <el-option
-              v-for="(item,index) in mediaList"
-              :key="index"
-              :label="item.full_name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
+      <el-button-group>
+
+        <el-button size="mini" type="primary" icon="el-icon-plus" @click="$router.push({name:'NewPlan'})">
+          新建计划
+        </el-button>
 
 
-        <el-form-item label="广告">
-          <el-select v-model="queryParams.advertiser" filterable clearable placeholder="请选择">
-            <el-option
-              v-for="item in advertList"
-              :key="item.id"
-              :label="item.full_name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
+        <el-button icon="el-icon-upload2" size="mini">数据导入</el-button>
 
-
-        <el-form-item label="日期">
-          <el-date-picker
-            value-format="timestamp"
-            v-model="dateRange"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期">
-          </el-date-picker>
-        </el-form-item>
-
-
-        <el-form-item label="状态">
-          <el-select v-model="queryParams.status" placeholder="请选择">
-            <el-option
-              v-for="item in statusList"
-              :key="item.id"
-              :label="item.title"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="query">查询</el-button>
-        </el-form-item>
-      </el-form>
-
-    </el-row>
-
-    <el-row :gutter="10" style="margin-bottom: 10px">
-      <el-col :span="6">
-        <span style="font-size: 14px;float: right">媒体：</span>
-      </el-col>
-
-      <el-col :span="18">
-
-        <el-checkbox :indeterminate="m_isIndeterminate" v-model="m_checkAll"
-                     @change="m_handleCheckAllChange"
-                     style="margin-right: 28px"
-        >全选
-        </el-checkbox>
-        <!--<div style="margin: 15px 0;"></div>-->
-        <el-checkbox-group v-model="m_checkedColumn" @change="m_handleCheckedColumnChange"
-                           style="display: inline;">
-          <el-checkbox v-for="item in m_columnsOption" :label="item.prop" :key="item.prop"> {{item.label}}
-          </el-checkbox>
-        </el-checkbox-group>
-      </el-col>
-
-
-    </el-row>
-
-    <el-row :gutter="10" style="margin-bottom: 10px">
-
-       <el-col :span="6">
-        <span style="font-size: 14px;float: right">广告：</span>
-      </el-col>
-      <el-col :span="18">
-
-        <el-checkbox :indeterminate="a_isIndeterminate" v-model="a_checkAll"
-                     @change="a_handleCheckAllChange"
-                     style="margin-right: 28px"
-        >全选
-        </el-checkbox>
-        <!--<div style="margin: 15px 0;"></div>-->
-        <el-checkbox-group v-model="a_checkedColumn" @change="a_handleCheckedColumnChange"
-                           style="display: inline;">
-          <el-checkbox v-for="item in a_columnsOption" :label="item.prop" :key="item.prop"> {{item.label}}
-          </el-checkbox>
-        </el-checkbox-group>
-      </el-col>
+      </el-button-group>
 
 
     </el-row>
 
 
+    <el-row>
+      <el-col :span="18" :offset="2">
+        <el-form inline size="mini" class="query">
+
+          <el-form-item label="媒体">
+            <el-select v-model="queryParams.media" filterable clearable placeholder="请选择">
+              <el-option
+                v-for="(item,index) in mediaList"
+                :key="index"
+                :label="item.full_name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+
+          <el-form-item label="广告">
+            <el-select v-model="queryParams.advertiser" filterable clearable placeholder="请选择">
+              <el-option
+                v-for="item in advertList"
+                :key="item.id"
+                :label="item.full_name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+
+          <el-form-item label="日期">
+            <el-date-picker
+              value-format="timestamp"
+              v-model="dateRange"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+          </el-form-item>
+
+
+          <el-form-item label="状态">
+            <el-select v-model="queryParams.status" placeholder="请选择">
+              <el-option
+                v-for="item in statusList"
+                :key="item.id"
+                :label="item.title"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <div>
+
+          </div>
+        </el-form>
+      </el-col>
+      <el-col :span="4">
+        <el-button-group>
+          <el-button type="primary" @click="query" icon="el-icon-search"></el-button>
+          <el-tooltip content='导出数据' placement='top'>
+            <el-button icon='el-icon-download'></el-button>
+          </el-tooltip>
+          <el-tooltip content='显示更多查询条件' placement='top'>
+            <el-button>
+              <i class="el-icon-arrow-down"></i>
+            </el-button>
+          </el-tooltip>
+        </el-button-group>
+      </el-col>
+    </el-row>
+
+    <el-divider>
+
+      <el-link :underline="false"
+               type="success" @click="optionsShow=!optionsShow"><i
+        :class="{'el-icon-caret-bottom':optionsShow,'el-icon-caret-top':!optionsShow}"></i> 展示选项
+      </el-link>
+      <!--<el-button icon="el-icon-search" circle></el-button>-->
+    </el-divider>
+    <div v-show="optionsShow">
+      <el-card shadow="never" style="margin-bottom: 20px;background-color: #f7f7f7;">
+        <el-row :gutter="10" style="margin-bottom: 10px">
+          <el-col :span="6">
+            <span style="font-size: 14px;float: right">媒体：</span>
+          </el-col>
+
+          <el-col :span="18">
+
+            <el-checkbox :indeterminate="m_isIndeterminate" v-model="m_checkAll"
+                         @change="m_handleCheckAllChange"
+                         style="margin-right: 28px"
+            >全选
+            </el-checkbox>
+            <!--<div style="margin: 15px 0;"></div>-->
+            <el-checkbox-group v-model="m_checkedColumn" @change="m_handleCheckedColumnChange"
+                               style="display: inline;">
+              <el-checkbox v-for="item in m_columnsOption" :label="item.prop" :key="item.prop"> {{item.label}}
+              </el-checkbox>
+            </el-checkbox-group>
+          </el-col>
+
+
+        </el-row>
+
+        <el-row :gutter="10" style="margin-bottom: 10px">
+
+          <el-col :span="6">
+            <span style="font-size: 14px;float: right">广告：</span>
+          </el-col>
+          <el-col :span="18">
+
+            <el-checkbox :indeterminate="a_isIndeterminate" v-model="a_checkAll"
+                         @change="a_handleCheckAllChange"
+                         style="margin-right: 28px"
+            >全选
+            </el-checkbox>
+            <!--<div style="margin: 15px 0;"></div>-->
+            <el-checkbox-group v-model="a_checkedColumn" @change="a_handleCheckedColumnChange"
+                               style="display: inline;">
+              <el-checkbox v-for="item in a_columnsOption" :label="item.prop" :key="item.prop"> {{item.label}}
+              </el-checkbox>
+            </el-checkbox-group>
+          </el-col>
+
+
+        </el-row>
+
+
+      </el-card>
+      <el-divider></el-divider>
+    </div>
+
+    <el-row type="flex" justify="space-between" style="height: 32px;margin-bottom: 24px">
+      <el-col :span="2">
+        <el-button-group v-show="deleteShow">
+
+          <el-button type="danger" icon="el-icon-delete">批量删除</el-button>
+
+        </el-button-group>
+      </el-col>
+      <el-col :span="4">
+        <el-button-group v-if="actionsShow">
+          <el-tooltip effect="dark" content="编辑计划" placement="left">
+            <el-button icon="el-icon-edit"
+                       @click="$router.push({name:'EditPlan',params:{plan_id:singleRowData.id}})"></el-button>
+          </el-tooltip>
+          <el-tooltip effect="dark" content="数据录入" placement="top">
+            <el-button icon="el-icon-s-data" @click="$router.push({name:'PlanSettlement',params:{plan_id:singleRowData.id},
+             query: { settlement_id: singleRowData.settlement_info.id }})"></el-button>
+          </el-tooltip>
+          <el-tooltip effect="dark" content="拷贝计划" placement="right">
+            <el-button icon="el-icon-copy-document"
+                       @click="$router.push({name:'CopyPlan',query:{id:singleRowData.id}})"></el-button>
+          </el-tooltip>
+        </el-button-group>
+      </el-col>
+    </el-row>
     <!--:header-row-style="{color:'red'}"-->
+
     <el-table
       :data="planTable"
       highlight-current-row
-      style="width: 100%"
-
+      style="font-size: 14px"
+      :row-style="{height:'50px'}"
+      :cell-style="{padding:'5px 0px'}"
       height="600"
       v-loading="loading"
       show-summary
       :summary-method="getSummaries"
+      @current-change="handleCurrentChange"
+      @selection-change="handleSelectionChange"
       ref="tableDataRef"
       :header-cell-style="headerRowStyle"
     >
@@ -134,16 +203,16 @@
       </el-table-column>
       <el-table-column
         label="投放日期"
-        prop="launch_date" width="85px" align="center">
+        prop="launch_date" width="100px" align="center">
       </el-table-column>
       <el-table-column
         label="状态"
         prop="settlement_info.status" width="85px" align="center">
         <template slot-scope="scope">
 
-          <el-tag type="danger" v-show="scope.row.status===0">未执行</el-tag>
-          <el-tag type="success" v-show="scope.row.status===1">执行中</el-tag>
-          <el-tag type="success" v-show="scope.row.status===2">已完成</el-tag>
+          <el-tag type="danger" v-if="scope.row.status===0">未执行</el-tag>
+          <el-tag type="success" v-else-if="scope.row.status===1">执行中</el-tag>
+          <el-tag type="success" v-else="scope.row.status===2">已完成</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -155,6 +224,10 @@
         <el-table-column
           label="媒体"
           prop="m_full_name" align="center">
+          <template slot-scope="scope">
+          <span style="color: #409EFF">{{scope.row.m_full_name}} </span>
+
+          </template>
         </el-table-column>
         <el-table-column v-for=" col in  m_columns" :prop="col.prop" :label="col.label" align="center"
                          :key="col.prop"></el-table-column>
@@ -172,45 +245,24 @@
           prop="a_full_name" align="center"
 
         >
+
+           <template slot-scope="scope">
+          <span style="color: #67C23A">{{scope.row.a_full_name}} </span>
+
+          </template>
         </el-table-column>
         <el-table-column v-for=" col in  a_columns" :prop="col.prop" :label="col.label" align="center"
                          :key="col.prop" width="85px"></el-table-column>
       </el-table-column>
       <el-table-column
         label="利润(元)"
-        prop="settlement_info.profit" fixed="right" align="center">
+        prop="settlement_info.profit"  width="100">
         <template slot-scope="scope">
           <span :style="(scope.row.settlement_info.profit>0?'':'color:red')">{{scope.row.settlement_info.profit}}</span>
         </template>
       </el-table-column>
 
 
-      <el-table-column label="操作" fixed="right" align="center" width="180px">
-        <template slot-scope="scope">
-          <router-link
-            :to="{name:'EditPlan',params:{plan_id:scope.row.id}}"
-          >
-            <el-link type="primary" :underline="false">编辑</el-link>
-
-          </router-link>
-          <el-divider direction="vertical"></el-divider>
-          <router-link
-            :to="{name:'PlanSettlement',params:{plan_id:scope.row.id},
-             query: { settlement_id: scope.row.settlement_info.id }}"
-          >
-            <!--<el-link type="primary" :underline="false" v-if="scope.row.settlement_info.status===0">录入数据</el-link>-->
-            <!--<el-link type="primary" :underline="false" v-else="scope.row.settlement_info.status===1">查看数据</el-link>-->
-            <el-link type="primary" :underline="false">数据</el-link>
-          </router-link>
-          <el-divider direction="vertical"></el-divider>
-
-          <router-link
-            :to="{name:'CopyPlan',query:{id:scope.row.id}}"
-          >
-            <el-link type="primary" :underline="false">拷贝</el-link>
-          </router-link>
-        </template>
-      </el-table-column>
     </el-table>
 
     <!-- 分页 -->
@@ -338,6 +390,11 @@
     data() {
       return {
         loading: false,
+        optionsShow: false,
+        // actionsShow:false,
+        //singleRow: false,
+        multipleSelection: [],
+        singleRowData: null,
         advertList: [],
         mediaList: [],
         planTable: [],
@@ -480,7 +537,7 @@
         let sumsIntit = ["", "合计", ""]
 
         for (let i = 0; i < columns.length; i++) {
-          if (i <= sumsIntit.length-1) {
+          if (i <= sumsIntit.length - 1) {
             continue;
           } else {
             //console.log(columns[i].property)
@@ -494,9 +551,49 @@
         //    this.$refs.tableDataRef.doLayout();
         //  });
         return sumsIntit
+      },
+      handleCurrentChange(val) {
+
+        //this.singleRow = true;
+
+        this.singleRowData = val
+
+        console.log("this.singleRowData", this.singleRowData);
+      },
+      handleSelectionChange(val) {
+        // console.log("状态改变了");
+        // console.log(this.actionsShow)
+        // this.actionsShow=false;
+        // console.log(this.actionsShow)
+        this.multipleSelection = val;
+        console.log(this.multipleSelection)
+        this.$nextTick(() => {
+          //取消行的选中状态
+          this.$refs.tableDataRef.setCurrentRow();
+          //this.singleRowData = null;
+
+          console.log("fasle")
+        });
       }
     },
     computed: {
+      deleteShow: {
+
+        get() {
+
+          return this.multipleSelection.length > 0
+
+        }
+        ,
+        set() {
+
+        }
+      },
+      actionsShow: {
+        get() {
+          return this.singleRowData != null
+        }
+      },
       m_columns: {
         get() {
           let tempCols = []
@@ -568,5 +665,9 @@
 <style scoped>
   .ad {
     color: red;
+  }
+
+  .query .el-form-item {
+    margin-bottom: 0px;
   }
 </style>
