@@ -2,16 +2,18 @@
   <div>
 
 
-    <el-row type="flex" justify="center" style="margin-bottom: 20px">
+    <el-row type="flex" justify="center" style="margin-bottom: 40px">
 
       <el-button-group>
 
-        <el-button size="mini" type="primary" icon="el-icon-plus" @click="$router.push({name:'NewPlan'})">
+        <el-button type="primary" icon="el-icon-plus" @click="$router.push({name:'NewPlan'})">
           新建计划
         </el-button>
 
 
-        <el-button icon="el-icon-upload2" size="mini">数据导入</el-button>
+        <el-button icon="el-icon-upload2" type="info">数据导入</el-button>
+
+        <el-button icon='el-icon-download' type="warning">数据导出</el-button>
 
       </el-button-group>
 
@@ -76,10 +78,8 @@
       </el-col>
       <el-col :span="4">
         <el-button-group>
-          <el-button type="primary" @click="query" icon="el-icon-search"></el-button>
-          <el-tooltip content='导出数据' placement='top'>
-            <el-button icon='el-icon-download'></el-button>
-          </el-tooltip>
+          <el-button type="primary" @click="query" icon="el-icon-search">查询</el-button>
+
           <el-tooltip content='显示更多查询条件' placement='top'>
             <el-button>
               <i class="el-icon-arrow-down"></i>
@@ -92,8 +92,8 @@
     <el-divider>
 
       <el-link :underline="false"
-               type="success" @click="optionsShow=!optionsShow"><i
-        :class="{'el-icon-caret-bottom':optionsShow,'el-icon-caret-top':!optionsShow}"></i> 展示选项
+               type="Info" @click="optionsShow=!optionsShow"><i
+        :class="{'el-icon-caret-bottom':optionsShow,'el-icon-caret-top':!optionsShow}"></i>展示选项
       </el-link>
       <!--<el-button icon="el-icon-search" circle></el-button>-->
     </el-divider>
@@ -150,29 +150,43 @@
       <el-divider></el-divider>
     </div>
 
-    <el-row type="flex" justify="space-between" style="height: 32px;margin-bottom: 24px">
-      <el-col :span="2">
-        <el-button-group v-show="deleteShow">
+    <el-row style="height: 32px;margin-bottom: 24px">
+      <el-col :span="8" style="min-height: 10px">
 
-          <el-button type="danger" icon="el-icon-delete">批量删除</el-button>
+        <div >
+          <el-button v-show="deleteShow" type="danger" icon="el-icon-delete" plain>批量删除</el-button>
+        </div>
 
-        </el-button-group>
+
       </el-col>
-      <el-col :span="4">
+      <el-col :span="8" style="text-align: center">
         <el-button-group v-if="actionsShow">
           <el-tooltip effect="dark" content="编辑计划" placement="left">
             <el-button icon="el-icon-edit"
-                       @click="$router.push({name:'EditPlan',params:{plan_id:singleRowData.id}})"></el-button>
+                       @click="$router.push({name:'EditPlan',params:{plan_id:singleRowData.id}})"
+                       type="primary"
+                       plain
+            >编辑计划
+            </el-button>
           </el-tooltip>
           <el-tooltip effect="dark" content="数据录入" placement="top">
-            <el-button icon="el-icon-s-data" @click="$router.push({name:'PlanSettlement',params:{plan_id:singleRowData.id},
-             query: { settlement_id: singleRowData.settlement_info.id }})"></el-button>
+            <el-button icon="el-icon-s-data"
+                       type="success"
+                       plain
+                       @click="$router.push({name:'PlanSettlement',params:{plan_id:singleRowData.id},
+             query: { settlement_id: singleRowData.settlement_info.id }})">数据录入
+            </el-button>
           </el-tooltip>
           <el-tooltip effect="dark" content="拷贝计划" placement="right">
             <el-button icon="el-icon-copy-document"
-                       @click="$router.push({name:'CopyPlan',query:{id:singleRowData.id}})"></el-button>
+                       type="warning"
+                       plain
+                       @click="$router.push({name:'CopyPlan',query:{id:singleRowData.id}})">拷贝计划
+            </el-button>
           </el-tooltip>
         </el-button-group>
+      </el-col>
+      <el-col :span="6" style="text-align: center">
       </el-col>
     </el-row>
     <!--:header-row-style="{color:'red'}"-->
@@ -225,7 +239,7 @@
           label="媒体"
           prop="m_full_name" align="center">
           <template slot-scope="scope">
-          <span style="color: #409EFF">{{scope.row.m_full_name}} </span>
+            <span style="color: #409EFF">{{scope.row.m_full_name}} </span>
 
           </template>
         </el-table-column>
@@ -246,8 +260,8 @@
 
         >
 
-           <template slot-scope="scope">
-          <span style="color: #67C23A">{{scope.row.a_full_name}} </span>
+          <template slot-scope="scope">
+            <span style="color: #67C23A">{{scope.row.a_full_name}} </span>
 
           </template>
         </el-table-column>
@@ -256,7 +270,7 @@
       </el-table-column>
       <el-table-column
         label="利润(元)"
-        prop="settlement_info.profit"  width="100">
+        prop="settlement_info.profit" width="100">
         <template slot-scope="scope">
           <span :style="(scope.row.settlement_info.profit>0?'':'color:red')">{{scope.row.settlement_info.profit}}</span>
         </template>
